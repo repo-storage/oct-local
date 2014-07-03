@@ -4,10 +4,10 @@ use App;
 use Model;
 use DirectoryIterator;
 
-class EditorPreferences extends Model
+class EditorSettings extends Model
 {
-    public $implement = ['Backend.Behaviors.UserPreferencesModel'];
-    public $settingsCode = 'backend::editor.preferences';
+    public $implement = ['Backend.Behaviors.UserSettingsModel'];
+    public $settingsCode = 'system::editor.settings';
     public $settingsFields = 'fields.yaml';
 
     const DEFAULT_THEME = 'twilight';

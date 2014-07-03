@@ -156,8 +156,8 @@ return [
         'extension' => 'The PHP extension :name is not installed. Please install this library and activate the extension.'
     ],
     'editor' => [
-        'menu_label' => 'Code Editor Preferences',
-        'menu_description' => 'Customize the code editor preferences, such as font size and color scheme.',
+        'menu_label' => 'Editor Preferences',
+        'menu_description' => 'Manage code editor preferences.',
         'font_size' => 'Font size',
         'tab_size' => 'Tab size',
         'use_hard_tabs' => 'Indent using tabs',
@@ -170,19 +170,5 @@ return [
     ],
     'tooltips' => [
         'preview_website' => 'Preview the website'
-    ],
-    'mysettings' => [
-        'menu_label' => 'My Settings',
-        'menu_description' => 'Settings relate to your administration account',
-    ],
-    'myaccount' => [
-        'menu_label' => 'My Account',
-        'menu_description' => 'Update your account details such as name, email address and password.',
-    ],
-    'backend_preferences' => [
-        'menu_label' => 'Backend Preferences',
-        'menu_description' => 'Manage language preference and the appearance of the backend.',
-        'locale' => 'Language',
-        'locale_comment' => 'Select your desired locale for language use.',
-    ],
+    ]
 ];

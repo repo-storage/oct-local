@@ -1,6 +1,5 @@
 <?php namespace Backend\Controllers;
 
-use Lang;
 use Backend;
 use Redirect;
 use BackendMenu;
@@ -32,7 +31,7 @@ class Users extends Controller
     {
         parent::__construct();
 
-        if ($this->action == 'myaccount')
+        if ($this->action == 'mysettings')
             $this->requiredPermissions = null;
 
         BackendMenu::setContext('October.System', 'system', 'users');
@@ -44,8 +43,8 @@ class Users extends Controller
     public function update($recordId, $context = null)
     {
         // Users cannot edit themselves, only use My Settings
-        if ($context != 'myaccount' && $recordId == $this->user->id)
-            return Redirect::to(Backend::url('backend/users/myaccount'));
+        if ($context != 'mysettings' && $recordId == $this->user->id)
+            return Redirect::to(Backend::url('backend/users/mysettings'));
 
         return $this->getClassExtension('Backend.Behaviors.FormController')->update($recordId, $context);
     }
@@ -53,17 +52,16 @@ class Users extends Controller
     /**
      * My Settings controller
      */
-    public function myaccount()
+    public function mysettings()
     {
-        BackendMenu::setContextSideMenu('mysettings');
-        $this->pageTitle = Lang::get('backend::lang.myaccount.menu_label');
-        return $this->update($this->user->id, 'myaccount');
+        $this->pageTitle = 'My Settings';
+        return $this->update($this->user->id, 'mysettings');
     }
 
     /**
      * Proxy update onSave event
      */
-    public function myaccount_onSave()
+    public function mysettings_onSave()
     {
         $result = $this->getClassExtension('Backend.Behaviors.FormController')->update_onSave($this->user->id);
 
@@ -83,7 +81,7 @@ class Users extends Controller
      */
     protected function formExtendFields($host)
     {
-        if ($host->getContext() == 'myaccount')
+        if ($host->getContext() == 'mysettings')
             return;
 
         $permissionFields = [];

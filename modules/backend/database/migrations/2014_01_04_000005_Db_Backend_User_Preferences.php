@@ -22,6 +22,6 @@ class DbBackendUserPreferences extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('backend_user_preferences');
+        Schema::drop('backend_user_preferences');
     }
 }

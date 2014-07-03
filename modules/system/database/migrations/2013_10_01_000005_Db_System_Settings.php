@@ -19,6 +19,6 @@ class DbSystemSettings extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('system_settings');
+        Schema::drop('system_settings');
     }
 }

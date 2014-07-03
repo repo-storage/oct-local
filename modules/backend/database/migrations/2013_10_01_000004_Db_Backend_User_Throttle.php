@@ -25,7 +25,7 @@ class DbBackendUserThrottle extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('backend_user_throttle');
+        Schema::drop('backend_user_throttle');
     }
 
 }

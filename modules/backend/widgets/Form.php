@@ -120,7 +120,7 @@ class Form extends WidgetBase
      */
     public function loadAssets()
     {
-        $this->addJs('js/october.form.js', 'core');
+        $this->addJs('js/form.js', 'core');
     }
 
     /**
@@ -128,7 +128,6 @@ class Form extends WidgetBase
      *
      * Options:
      *  - preview: Render this form as an uneditable preview. Default: false
-     *  - useContainer: Wrap the result in a container, used by AJAX. Default: true
      *  - section: Which form section to render. Default: null
      *     - outside: Renders the Outside Fields area.
      *     - primary: Renders the Primary Tabs area.
@@ -138,43 +137,26 @@ class Form extends WidgetBase
     public function render($options = [])
     {
         if (isset($options['preview'])) $this->previewMode = $options['preview'];
-        if (!isset($options['useContainer'])) $options['useContainer'] = true;
-        if (!isset($options['section'])) $options['section'] = null;
-
-        $extraVars = [];
-        $targetPartial = 'form';
 
         /*
          * Determine the partial to use based on the supplied section option
          */
-        if ($section = $options['section']) {
-
-            switch (strtolower($section)) {
-                default:
-                case 'outside': $sectionPartial = 'section_outside-fields'; break;
-                case 'primary': $sectionPartial = 'section_primary-tabs'; break;
-                case 'secondary': $sectionPartial = 'section_secondary-tabs'; break;
-            }
-
-            $targetPartial = $sectionPartial;
-            $extraVars['renderSection'] = $section;
-        }
-
-        /*
-         * Apply a container to the element
-         */
-        if ($useContainer = $options['useContainer']) {
-            $targetPartial = ($section) ? 'section-container' : 'form-container';
+        $section = (isset($options['section'])) ? $options['section'] : null;
+        switch (strtolower($section)) {
+            case 'outside': $targetPartial = 'form_outside_fields'; break;
+            case 'primary': $targetPartial = 'form_primary_tabs'; break;
+            case 'secondary': $targetPartial = 'form_secondary_tabs'; break;
+            default: $targetPartial = 'form'; break;
         }
 
         $this->prepareVars();
-        return $this->makePartial($targetPartial, $extraVars);
+        return $this->makePartial($targetPartial);
     }
 
     /**
      * Renders a single form field
      */
-    public function renderField($field, $options = [])
+    public function renderField($field)
     {
         if (is_string($field)) {
             if (!isset($this->allFields[$field]))
@@ -183,11 +165,8 @@ class Form extends WidgetBase
             $field = $this->allFields[$field];
         }
 
-        if (!isset($options['useContainer'])) $options['useContainer'] = true;
-        $targetPartial = $options['useContainer'] ? 'field-container' : 'field';
-
         $this->prepareVars();
-        return $this->makePartial($targetPartial, ['field' => $field]);
+        return $this->makePartial('field', ['field' => $field]);
     }
 
     /**
@@ -209,7 +188,7 @@ class Form extends WidgetBase
         if (!$this->model)
             throw new ApplicationException(Lang::get('backend::lang.form.missing_model', ['class'=>get_class($this->controller)]));
 
-        $this->data = (object) $this->getConfig('data', $this->model);
+        $this->data = (object)$this->getConfig('data', $this->model);
 
         return $this->model;
     }
@@ -224,77 +203,6 @@ class Form extends WidgetBase
         $this->vars['outsideFields'] = $this->outsideFields;
         $this->vars['primaryTabs'] = $this->primaryTabs;
         $this->vars['secondaryTabs'] = $this->secondaryTabs;
-    }
-
-    /**
-     * Sets or resets form field values.
-     * @param array $data
-     * @return array
-     */
-    public function setFormValues($data = null)
-    {
-        if ($data == null)
-            $data = $this->getSaveData();
-
-        $this->model->fill($data);
-        $this->data = (object) array_merge((array) $this->data, (array) $data);
-
-        foreach ($this->allFields as $field)
-            $field->value = $this->getFieldValue($field);
-
-        return $data;
-    }
-
-    /**
-     * Event handler for refreshing the form.
-     */
-    public function onRefresh()
-    {
-        $result = [];
-        $saveData = $this->getSaveData();
-
-        /*
-         * Extensibility
-         */
-        $eventResults = $this->fireEvent('form.refreshBefore', [$this, $saveData]) + Event::fire('backend.form.refreshBefore', [$this, $saveData]);
-        foreach ($eventResults as $eventResult)
-            $saveData = $eventResult + $saveData;
-
-        /*
-         * Set the form variables and prepare the widget
-         */
-        $this->setFormValues($saveData);
-        $this->prepareVars();
-
-
-        /*
-         * If an array of fields is supplied, update specified fields individually.
-         */
-        if (($updateFields = post('fields')) && is_array($updateFields)) {
-
-            foreach ($updateFields as $field) {
-                if (!isset($this->allFields[$field]))
-                    continue;
-
-                $fieldObject = $this->allFields[$field];
-                $result['#' . $fieldObject->getId('group')] = $this->makePartial('field', ['field' => $fieldObject]);
-            }
-        }
-
-        /*
-         * Update the whole form
-         */
-        if (empty($result))
-            $result = ['#'.$this->getId() => $this->makePartial('form')];
-
-        /*
-         * Extensibility
-         */
-        $eventResults = $this->fireEvent('form.refresh', [$this, $result]) + Event::fire('backend.form.refresh', [$this, $result]);
-        foreach ($eventResults as $eventResult)
-            $result = $eventResult + $result;
-
-        return $result;
     }
 
     /**
@@ -492,25 +400,14 @@ class Form extends WidgetBase
          */
         $optionModelTypes = ['dropdown', 'radio', 'checkboxlist'];
         if (in_array($field->type, $optionModelTypes)) {
-
-            /*
-             * Defer the execution of option data collection
-             */
-            $field->options(function() use ($field, $config) {
-                $fieldOptions = (isset($config['options'])) ? $config['options'] : null;
-                $fieldOptions = $this->getOptionsFromModel($field, $fieldOptions);
-                return $fieldOptions;
-            });
+            $fieldOptions = (isset($config['options'])) ? $config['options'] : null;
+            $fieldOptions = $this->getOptionsFromModel($field, $fieldOptions);
+            $field->options($fieldOptions);
         }
 
         return $field;
     }
 
-    /**
-     * Check if a field type is a widget or not
-     * @param  string  $fieldType
-     * @return boolean
-     */
     private function isFormWidget($fieldType)
     {
         if ($fieldType === null)
@@ -622,22 +519,6 @@ class Form extends WidgetBase
         }
 
         return $result;
-    }
-
-    /**
-     * Returns a HTML encoded value containing the other fields this
-     * field depends on
-     * @param  use Backend\Classes\FormField $field
-     * @return string
-     */
-    public function getFieldDepends($field)
-    {
-        if (!$field->depends)
-            return;
-
-        $depends = is_array($field->depends) ? $field->depends : [$field->depends];
-        $depends = htmlspecialchars(json_encode($depends), ENT_QUOTES, 'UTF-8');
-        return $depends;
     }
 
     /**

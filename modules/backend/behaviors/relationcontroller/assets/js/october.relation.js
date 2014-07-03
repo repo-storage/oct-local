@@ -5,20 +5,19 @@
 
     var RelationBehavior = function() {
 
-        this.clickManageListRecord = function(recordId, relationField, sessionKey) {
+        this.clickManageListRecord = function(relationField, recordId) {
             var newPopup = $('<a />')
 
             newPopup.popup({
                 handler: 'onRelationManageForm',
                 extraData: {
-                    'manage_id': recordId,
                     '_relation_field': relationField,
-                    '_session_key': sessionKey
+                    'manage_id': recordId
                 }
             })
         }
 
-        this.clickManagePivotListRecord = function(foreignId, relationField, sessionKey) {
+        this.clickManagePivotListRecord = function(relationField, foreignId) {
             var oldPopup = $('#relationManagePivotPopup'),
                 newPopup = $('<a />')
 
@@ -27,9 +26,8 @@
             newPopup.popup({
                 handler: 'onRelationManagePivotForm',
                 extraData: {
-                    'foreign_id': foreignId,
                     '_relation_field': relationField,
-                    '_session_key': sessionKey
+                    'foreign_id': foreignId
                 }
             })
         }

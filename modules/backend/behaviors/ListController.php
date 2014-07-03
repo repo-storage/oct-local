@@ -164,7 +164,7 @@ class ListController extends ControllerBehavior
             if ($searchWidget = $toolbarWidget->getSearchWidget()) {
                 $searchWidget->bindEvent('search.submit', function() use ($widget, $searchWidget) {
                     $widget->setSearchTerm($searchWidget->getActiveTerm());
-                    return $widget->onRefresh();
+                    return $widget->onRender();
                 });
 
                 // Find predefined search term
@@ -224,7 +224,7 @@ class ListController extends ControllerBehavior
         if (!$definition || !isset($this->listDefinitions[$definition]))
             $definition = $this->primaryDefinition;
 
-        return $this->listWidgets[$definition]->onRefresh();
+        return $this->listWidgets[$definition]->onRender();
     }
 
     //

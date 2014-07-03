@@ -22,7 +22,7 @@ class DbSystemPluginHistory extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('system_plugin_history');
+        Schema::drop('system_plugin_history');
     }
 
 }

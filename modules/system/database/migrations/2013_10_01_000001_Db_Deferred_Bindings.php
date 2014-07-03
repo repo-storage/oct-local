@@ -24,7 +24,7 @@ class DbDeferredBindings extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('deferred_bindings');
+        Schema::drop('deferred_bindings');
     }
 
 }

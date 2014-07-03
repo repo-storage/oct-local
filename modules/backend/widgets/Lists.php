@@ -131,11 +131,6 @@ class Lists extends WidgetBase
     public $treeExpanded = true;
 
     /**
-     * @var array List of CSS classes to apply to the list container element
-     */
-    public $cssClasses = [];
-
-    /**
      * Initialize the widget, called by the constructor and free from its parameters.
      */
     public function init()
@@ -173,7 +168,7 @@ class Lists extends WidgetBase
     public function render()
     {
         $this->prepareVars();
-        return $this->makePartial('list-container');
+        return $this->makePartial('list_container');
     }
 
     /**
@@ -181,7 +176,6 @@ class Lists extends WidgetBase
      */
     public function prepareVars()
     {
-        $this->vars['cssClasses'] = implode(' ', $this->cssClasses);
         $this->vars['columns'] = $this->getVisibleListColumns();
         $this->vars['columnTotal'] = $this->getTotalColumns();
         $this->vars['records'] = $this->getRecords();
@@ -211,7 +205,7 @@ class Lists extends WidgetBase
     /**
      * Event handler for refreshing the list.
      */
-    public function onRefresh()
+    public function onRender()
     {
         $this->prepareVars();
         return ['#'.$this->getId() => $this->makePartial('list')];
@@ -223,7 +217,7 @@ class Lists extends WidgetBase
     public function onPaginate()
     {
         App::make('paginator')->setCurrentPage(post('page'));
-        return $this->onRefresh();
+        return $this->onRender();
     }
 
     /**
@@ -555,16 +549,7 @@ class Lists extends WidgetBase
      */
     public function getColumnValue($record, $column)
     {
-        /*
-         * If the column is a relation, it will be a custom select,
-         * so prevent the Model from attempting to load the relation
-         * if the value is NULL.
-         */
-        $columnName = $column->columnName;
-        if ($record->hasRelation($columnName) && array_key_exists($columnName, $record->attributes))
-            $value = $record->attributes[$columnName];
-        else
-            $value = $record->{$columnName};
+        $value = $record->{$column->columnName};
 
         if (method_exists($this, 'eval'. studly_case($column->type) .'TypeValue'))
             $value = $this->{'eval'. studly_case($column->type) .'TypeValue'}($value, $column);
@@ -760,7 +745,7 @@ class Lists extends WidgetBase
              */
             App::make('paginator')->setCurrentPage(post('page'));
 
-            return $this->onRefresh();
+            return $this->onRender();
         }
     }
 
@@ -867,7 +852,7 @@ class Lists extends WidgetBase
 
         $this->putSession('order', post('column_order'));
         $this->putSession('per_page', post('records_per_page', $this->recordsPerPage));
-        return $this->onRefresh();
+        return $this->onRender();
     }
 
     /**
@@ -938,7 +923,7 @@ class Lists extends WidgetBase
     public function onToggleTreeNode()
     {
         $this->putSession('tree_node_status_' . post('node_id'), post('status') ? 0 : 1);
-        return $this->onRefresh();
+        return $this->onRender();
     }
 
 }

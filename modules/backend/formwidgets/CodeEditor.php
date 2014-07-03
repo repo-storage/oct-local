@@ -1,6 +1,6 @@
 <?php namespace Backend\FormWidgets;
 
-use Backend\Models\EditorPreferences;
+use Backend\Models\EditorSettings;
 use Backend\Classes\FormWidgetBase;
 
 /**
@@ -63,7 +63,7 @@ class CodeEditor extends FormWidgetBase
     public function init()
     {
         // Load the editor system settings
-        $editorSettings = EditorPreferences::instance();
+        $editorSettings = EditorSettings::instance();
 
         $this->fontSize = $this->getConfig('fontSize', $editorSettings->font_size);
         $this->wordWrap = $this->getConfig('wordWrap', $editorSettings->word_wrap);

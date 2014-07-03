@@ -30,7 +30,7 @@ class DbBackendUsers extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('backend_users');
+        Schema::drop('backend_users');
     }
 
 }

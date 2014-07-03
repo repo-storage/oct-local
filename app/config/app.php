@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost',
+	'url' => 'http://october-local.dev',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return array(
 	|
 	*/
 
-	'key' => 'CHANGE_ME!!!',
+	'key' => 'n7bYdNX9RBUnV8S2BguBNCGc58ctZUZw',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 

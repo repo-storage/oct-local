@@ -20,7 +20,7 @@ class DbSystemPluginVersions extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('system_plugin_versions');
+        Schema::drop('system_plugin_versions');
     }
 
 }

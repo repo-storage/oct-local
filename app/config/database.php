@@ -55,7 +55,7 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
-			'database'  => 'database',
+			'database'  => 'october-local',
 			'username'  => 'root',
 			'password'  => '',
 			'charset'   => 'utf8',
@@ -67,7 +67,7 @@ return array(
 			'driver'   => 'pgsql',
 			'host'     => 'localhost',
 			'database' => 'database',
-			'username' => 'root',
+			'username' => '',
 			'password' => '',
 			'charset'  => 'utf8',
 			'prefix'   => '',
