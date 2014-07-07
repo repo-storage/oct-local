@@ -1,0 +1,25 @@
+<?php namespace System\Models;
+
+use Model;
+use System\Classes\ApplicationException;
+
+class MailLayout extends Model
+{
+    /**
+     * @var string The database table used by the model.
+     */
+    protected $table = 'system_mail_layouts';
+
+    public $rules = [
+        'code'                  => 'required|unique:system_mail_layouts',
+        'name'                  => 'required',
+        'content_html'          => 'required',
+    ];
+
+    public function beforeDelete()
+    {
+        if ($this->is_locked)
+            throw new ApplicationException('Cannot delete this template because it is locked');
+
+    }
+}

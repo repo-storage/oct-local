@@ -256,7 +256,7 @@ class Form extends WidgetBase
         /*
          * Extensibility
          */
-        $eventResults = $this->fireEvent('form.refreshBefore', [$this, $saveData]) + Event::fire('backend.form.refreshBefore', [$this, $saveData]);
+        $eventResults = $this->fireEvent('form.beforeRefresh', [$saveData]) + Event::fire('backend.form.beforeRefresh', [$this, $saveData]);
         foreach ($eventResults as $eventResult)
             $saveData = $eventResult + $saveData;
 
@@ -265,7 +265,6 @@ class Form extends WidgetBase
          */
         $this->setFormValues($saveData);
         $this->prepareVars();
-
 
         /*
          * If an array of fields is supplied, update specified fields individually.
@@ -290,7 +289,7 @@ class Form extends WidgetBase
         /*
          * Extensibility
          */
-        $eventResults = $this->fireEvent('form.refresh', [$this, $result]) + Event::fire('backend.form.refresh', [$this, $result]);
+        $eventResults = $this->fireEvent('form.refresh', [$result]) + Event::fire('backend.form.refresh', [$this, $result]);
         foreach ($eventResults as $eventResult)
             $result = $eventResult + $result;
 
@@ -310,7 +309,7 @@ class Form extends WidgetBase
          * Extensibility
          */
         Event::fire('backend.form.extendFieldsBefore', [$this]);
-        $this->fireEvent('form.extendFieldsBefore', $this);
+        $this->fireEvent('form.extendFieldsBefore');
 
         /*
          * Outside fields
@@ -340,7 +339,7 @@ class Form extends WidgetBase
          * Extensibility
          */
         Event::fire('backend.form.extendFields', [$this]);
-        $this->fireEvent('form.extendFields', $this);
+        $this->fireEvent('form.extendFields');
 
         /*
          * Convert automatic spanned fields
