@@ -10,18 +10,18 @@ use Redirect;
 use BackendMenu;
 use BackendAuth;
 use Backend\Classes\Controller;
-use System\Models\EmailTemplate;
+use System\Models\MailTemplate;
 use System\Classes\ApplicationException;
 use Exception;
 
 /**
- * Email templates controller
+ * Mail templates controller
  *
  * @package october\system
  * @author Alexey Bobkov, Samuel Georges
  *
  */
-class EmailTemplates extends Controller
+class MailTemplates extends Controller
 {
 
     public $implement = [
@@ -29,7 +29,7 @@ class EmailTemplates extends Controller
         'Backend.Behaviors.ListController'
     ];
 
-    public $requiredPermissions = ['system.manage_email_templates'];
+    public $requiredPermissions = ['system.manage_mail_templates'];
 
     public $listConfig = ['templates' => 'config_templates_list.yaml', 'layouts' => 'config_layouts_list.yaml'];
     public $formConfig = 'config_form.yaml';
@@ -43,9 +43,9 @@ class EmailTemplates extends Controller
 
     public function index()
     {
-        /* @todo Remove line if year >= 2015 */ if (!\System\Models\EmailLayout::whereCode('default')->count()) { \Eloquent::unguard(); with(new \System\Database\Seeds\SeedSetupEmailLayouts)->run(); }
+        /* @todo Remove line if year >= 2015 */ if (!\System\Models\MailLayout::whereCode('default')->count()) { \Eloquent::unguard(); with(new \System\Database\Seeds\SeedSetupMailLayouts)->run(); }
 
-        EmailTemplate::syncAll();
+        MailTemplate::syncAll();
         $this->getClassExtension('Backend.Behaviors.ListController')->index();
     }
 
@@ -60,8 +60,13 @@ class EmailTemplates extends Controller
             $model = $this->formFindModelObject($recordId);
             $user = BackendAuth::getUser();
 
-            Mail::send($model->code, [], function($message) use ($user) {
-                $message->to($user->email, $user->full_name);
+            $vars = [
+                'email' => $user->email,
+                'name'  => $user->full_name,
+            ];
+            Mail::send($model->code, [], function($message) use ($vars) {
+                extract($vars);
+                $message->to($email, $name);
             });
 
             Flash::success('The test message has been successfully sent.');

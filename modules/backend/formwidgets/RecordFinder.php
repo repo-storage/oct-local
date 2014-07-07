@@ -112,7 +112,7 @@ class RecordFinder extends FormWidgetBase
         $this->vars['nameValue'] = $this->getNameValue();
         $this->vars['descriptionValue'] = $this->getDescriptionValue();
         $this->vars['listWidget'] = $this->listWidget;
-        $this->vars['prompt'] = str_replace('%s', '<i class="icon-search"></i>', $this->prompt);
+        $this->vars['prompt'] = str_replace('%s', '<i class="icon-th-list"></i>', $this->prompt);
     }
 
     /**
@@ -171,7 +171,7 @@ class RecordFinder extends FormWidgetBase
         $config->recordOnClick = sprintf("$('#%s').recordFinder('updateRecord', this, ':id')", $this->getId());
         $widget = $this->makeWidget('Backend\Widgets\Lists', $config);
 
-        // $widget->bindEvent('list.extendQueryBefore', function($host, $query) {
+        // $widget->bindEvent('list.extendQueryBefore', function($query) {
 
         //     /*
         //      * Where not in the current list of related records
