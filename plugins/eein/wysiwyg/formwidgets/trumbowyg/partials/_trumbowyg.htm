@@ -1,0 +1,12 @@
+<?php if ($this->previewMode): ?>
+    <div class="form-control"><?= $value ?></div>
+<?php else: ?>
+    <div
+        <?php /*id="<?= $this->getId() ?>"
+        class="field-trumbowyg size-<?= $size ?> <?= $stretch?'layout-item stretch':'' ?>"
+        data-iframe-css="<?= URL::to('/plugins/eein/wysiwyg/formwidgets/trumbowyg/assets/css/iframe.css') ?>"*/?>
+        data-control="trumbowyg">
+        
+        <textarea name="<?= $name ?>" id="<?= $this->getId('textarea') ?>"><?= e($value) ?></textarea>
+    </div>
+<?php endif ?>

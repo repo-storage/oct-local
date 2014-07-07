@@ -1,0 +1,16 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+name: OctoCase Category
+form: @/plugins/octodevel/octocase/models/category/fields.yaml
+modelClass: OctoDevel\OctoCase\Models\Category
+defaultRedirect: octodevel/octocase/categories
+
+create:
+    redirect: octodevel/octocase/categories/update/:id
+    redirectClose: octodevel/octocase/categories
+
+update:
+    redirect: octodevel/octocase/categories
+    redirectClose: octodevel/octocase/categories

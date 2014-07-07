@@ -1,0 +1,39 @@
+# ===================================
+#  List Behavior Config
+# ===================================
+
+# Model List Column configuration
+list: @/plugins/octodevel/octocase/models/category/columns.yaml
+
+# Model Class name
+modelClass: OctoDevel\OctoCase\Models\Category
+
+# List Title
+title: Manage OctoCase Categories
+
+# Link URL for each record
+recordUrl: octodevel/octocase/categories/update/:id
+
+# Message to display if the list is empty
+noRecordsMessage: backend::lang.list.no_records
+
+# Records to display per page
+recordsPerPage: 15
+
+# Sort by
+defaultSort: name
+
+# Display checkboxes next to each record
+showCheckboxes: true
+
+# Toolbar widget configuration
+toolbar:
+    # Partial for toolbar buttons
+    buttons: list_toolbar
+
+    # Search widget configuration
+    search:
+        prompt: backend::lang.list.search_prompt
+
+
+

@@ -1,0 +1,16 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+name: OctoCase Item
+form: @/plugins/octodevel/octocase/models/item/fields.yaml
+modelClass: OctoDevel\OctoCase\Models\Item
+defaultRedirect: octodevel/octocase/items
+
+create:
+    redirect: octodevel/octocase/items/update/:id
+    redirectClose: octodevel/octocase/items
+
+update:
+    redirect: octodevel/octocase/items
+    redirectClose: octodevel/octocase/items

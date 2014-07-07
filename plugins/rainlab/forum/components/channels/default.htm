@@ -1,0 +1,73 @@
+<div class="rainlab-forum">
+
+    <table class="forum-table">
+        {% for channel in channels %}
+
+            <tr class="root-channel">
+                <th colspan="2">
+                    {{ channel.title }}
+                </th>
+                <th class="counter-column">Topics</th>
+                <th class="counter-column">Posts</th>
+                <th class="activity-column">Last post</th>
+            </tr>
+
+            {% if channel.relations.children %}
+
+                {% for channel in channel.children %}
+
+                    <tr class="forum-channel">
+                        <td class="indicator-column">
+                            <div class="topic-indicator {{ member and channel.hasNew ? 'has-new' }}"></div>
+                        </td>
+                        <td>
+                            <h5>
+                                <a href="{{ channelPage|page({ (channelPageIdParam): channel.slug }) }}">
+                                    {{ channel.title }}
+                                </a>
+                            </h5>
+                            <p>{{ channel.description }}</p>
+
+                            {% if channel.children|length %}
+                                <div class="forum-subchannel">
+                                    <ul>
+                                        <li><span>Subforum</span></li>
+                                        {% for channel in channel.children %}
+                                            <li>
+                                                <a href="{{ channelPage|page({ (channelPageIdParam): channel.slug }) }}" title="{{ channel.description }}">
+                                                    {{ channel.title }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td class="counter-column">
+                            <p>{{ channel.count_topics }}</p>
+                        </td>
+                        <td class="counter-column">
+                            <p>{{ channel.count_posts }}</p>
+                        </td>
+                        <td class="activity-column">
+                            {% if channel.firstTopic %}
+                                <p>
+                                    <img src="{{ channel.firstTopic.last_post_member.user.avatarThumb(24, 'http://placehold.it/24x24.png') }}" class="member-avatar" />
+                                    <a href="{{ memberPage|page({ (memberPageIdParam): channel.firstTopic.last_post_member.slug }) }}">{{ channel.firstTopic.last_post_member.username }}</a>
+                                    posted
+                                    <a href="{{ topicPage|page({ (topicPageIdParam): channel.firstTopic.slug }) }}?page=last#post-{{ channel.firstTopic.last_post_id }}">{{ channel.firstTopic.last_post_at.diffForHumans }}</a>
+                                </p>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+            {% else %}
+                <tr>
+                    <td colspan="100"><p>There are no channels to show.</p></td>
+                </tr>
+            {% endif %}
+
+        {% endfor %}
+    </table>
+</div>

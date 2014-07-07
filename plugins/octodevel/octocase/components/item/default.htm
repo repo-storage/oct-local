@@ -1,0 +1,46 @@
+{% if item.images %}
+<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+    {% for image in item.images %}
+        <li data-target="#carousel-example-generic" data-slide-to="{{ loop.index0 }}" class="{% if loop.index0 == 0 %}active{% endif %}"></li>
+    {% endfor %}
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+    {% for image in item.images %}
+        <div class="item{% if loop.index0 == 0 %} active{% endif %}">
+            <img src="{{ image.path|app }}" alt="" class="img-responsive">
+            {% if image.description %}
+            <div class="carousel-caption">
+                <h3>{{ image.title }}</h3>
+                <p>{{ image.description }}</p>
+            </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    </div>
+
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+</div>
+{% endif %}
+
+<div class="content">
+    {{ item.content|raw }}
+</div>
+
+<div class="info">
+    Published
+    {% if item.categories.count %} in {% endif %}
+    {% for category in item.categories %}
+        <a href="{{ categoryPage|page({'slug': category.slug}) }}">{{ category.name }}</a>{% if not loop.last %}, {% endif %}
+    {% endfor %}
+    on {{ item.published_at|date('M d, Y') }}
+</div>
