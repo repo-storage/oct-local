@@ -1,0 +1,15 @@
+0.1.0:
+    - Initialize Plugin
+    - very much beta
+0.1.1:
+    - Adding Trumbowyg uploader Plugin
+    - The plugin adds a file into /uploads/public/wysiwyg/:slug/
+    - Alt text still not working
+0.1.2:
+    - Quick fix to non-blog paths.
+0.2.0:
+    - Updated plugin name.
+    - Updated plugin upload paths.
+    - Simplified Documenation to meet guidelines.
+0.2.1:
+    - replace_content_editor.php

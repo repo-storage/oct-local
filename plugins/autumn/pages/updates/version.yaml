@@ -1,0 +1,19 @@
+1.0.0:
+  - Init plugin
+  - create_pages_table.php
+1.0.1:
+  - 404 error support when page not found ( shows 404 system page )
+1.0.2:
+  - Add plugin dependency to Eein.Wysiwyg
+1.0.3:
+  - Normal 404 notfound page, out /404 before system 404
+  - Auto inject page titlte without onEnd method in page code section
+1.0.4:
+  - Add support SEO description and SEO meta data
+  - add_seo_fields_pages_table.php
+1.0.5:
+  - Fixes custom output with support component alias, please fix custom page out, rename to Autumn pages
+1.0.6:
+  - Add support permisions for /backend
+1.0.7:
+  - Permisions change category

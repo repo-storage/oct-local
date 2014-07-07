@@ -1,0 +1,31 @@
+# ===================================
+#  Form Behavior Config
+# ===================================
+
+# Record name
+name: Page
+
+# Model Form Field configuration
+form: @/plugins/autumn/pages/models/page/fields.yaml
+
+# Model Class name
+modelClass: Autumn\Pages\Models\Page
+
+# Default redirect location
+defaultRedirect: autumn/pages/pages
+
+# Create page
+create:
+    title: Create Pages
+    redirect: autumn/pages/pages/update/:id
+    redirectClose: autumn/pages/pages
+
+# Update page
+update:
+    title: Edit Pages
+    redirect: autumn/pages/pages
+    redirectClose: autumn/pages/pages
+
+# Preview page
+preview:
+    title: Preview Pages
